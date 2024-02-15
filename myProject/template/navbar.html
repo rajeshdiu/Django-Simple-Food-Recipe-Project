@@ -1,0 +1,18 @@
+
+<ul class="navbar">
+    <li><a class="active" href="{% url 'dashBoardPage' %}">Home</a></li>
+    <li><a class="active" href="{% url 'addRecipePage' %}">Add Recipe</a></li>
+    <li><a class="active" href="{% url 'view_favorites' %}">View Favorites</a></li>
+    <li><a class="active" href="{% url 'viewRecipePage' %}">View Recipe</a></li>
+    <li><a class="active" href="{% url 'recipe_categories' %}">See Category</a></li>
+    <li><a class="active" href="{% url 'AddRecipeCategoryPage' %}">Add Category</a></li>
+    <li><a class="active" href="{% url 'logoutPage' %}">Log out</a></li>
+
+    <li class="search">
+        <form class="search-form" method="get" action="{% url 'search_results' %}">
+            <input type="text" name="query" placeholder="Search...">
+            <button type="submit"><i class="fa fa-search"></i></button>
+        </form>
+
+    </li>
+</ul>

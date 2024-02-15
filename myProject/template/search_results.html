@@ -1,0 +1,104 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+<html>
+  <head>
+    <style>
+      /* styles.css */
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  margin: 0;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.recipe-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-around;
+  padding: 20px;
+}
+
+.recipe-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  margin: 10px;
+}
+
+.recipe-card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px 8px 0 0;
+}
+
+.recipe-header {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.recipe-header h3 {
+  color: #333;
+  margin: 0;
+}
+
+.recipe-details {
+  padding: 10px;
+}
+
+.recipe-details p {
+  margin-bottom: 10px;
+}
+
+/* Add more styles as needed */
+
+    </style>
+  </head>
+
+<body>
+
+  <div class="recipe-cards">
+
+    {% for recipe in recipes %}
+      <div class="recipe-card">
+        <div class="recipe-header">
+          <h3>{{ recipe.title }}</h3>
+          {% if recipe.image %}
+            <img src="{{ recipe.image.url }}" alt="{{ recipe.title }} Image">
+          {% endif %}
+        </div>
+        
+        <div class="recipe-details">
+          <p><strong>Ingredients:</strong> {{ recipe.ingredients }}</p>
+          <p><strong>Instructions:</strong> {{ recipe.instructions }}</p>
+          <p><strong>Preparation Time:</strong> {{ recipe.preparation_time }} minutes</p>
+          <p><strong>Cooking Time:</strong> {{ recipe.cooking_time }} minutes</p>
+          <p><strong>Total Time:</strong> {{ recipe.total_time }} minutes</p>
+          <p><strong>Difficulty:</strong> {{ recipe.difficulty }}</p>
+          <p><strong>Nutritional Information:</strong> {{ recipe.nutritional_information }}</p>
+          <p><strong>Category:</strong> {{ recipe.category.name }}</p>
+          
+          {% if recipe.tags.all %}
+            <p><strong>Tags:</strong> {{ recipe.tags.all|join:", " }}</p>
+          {% endif %}
+          
+          <p><strong>Total Calorie:</strong> {{ recipe.total_calorie }}</p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  
+  
+</body>
+
+</html>
+{% endblock %}
