@@ -79,12 +79,19 @@ body {
         
         <div class="recipe-details">
           <p><strong>Ingredients:</strong> {{ recipe.ingredients }}</p>
+          <hr>
           <p><strong>Instructions:</strong> {{ recipe.instructions }}</p>
+          <hr>
           <p><strong>Preparation Time:</strong> {{ recipe.preparation_time }} minutes</p>
+          <hr>
           <p><strong>Cooking Time:</strong> {{ recipe.cooking_time }} minutes</p>
+          <hr>
           <p><strong>Total Time:</strong> {{ recipe.total_time }} minutes</p>
+          <hr>
           <p><strong>Difficulty:</strong> {{ recipe.difficulty }}</p>
+          <hr>
           <p><strong>Nutritional Information:</strong> {{ recipe.nutritional_information }}</p>
+          <hr>
           <p><strong>Category:</strong> {{ recipe.category.name }}</p>
           
           {% if recipe.tags.all %}
@@ -92,9 +99,13 @@ body {
           {% endif %}
           
           <p><strong>Total Calorie:</strong> {{ recipe.total_calorie }}</p>
+          <hr>
           <a href="{% url 'edit_recipe' recipe.id %}">Edit</a>
+          <hr>
           <a href="{% url 'delete_recipe' recipe.id %}">Delete</a>
+          <hr>
           <a href="{% url 'add_to_favorites' recipe.id %}">Add to Favorites</a>
+          <hr>
         </div>
       </div>
     {% endfor %}

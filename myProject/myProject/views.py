@@ -49,7 +49,6 @@ def activateEmail(request,user,to_mail):
     else:
         message.error(request,f'not')
 
-
 def signupPage(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
@@ -57,13 +56,13 @@ def signupPage(request):
             user=form.save(commit=False)
             user.is_active=False
             user.save()
-            activateEmail(request, user, form.cleaned_data.get('email'))
+            email=form.cleaned_data.get('email')
+            activateEmail(request, user,email)
             messages.success(request, 'Registration successful. You are now logged in.')
             return redirect('mySigninPage')
     else:
         form = CustomUserCreationForm()
     return render(request, 'signupPage.html', {'form': form})
-
 
 def mySigninPage(request):
     if request.method == 'POST':
@@ -76,7 +75,6 @@ def mySigninPage(request):
     else:
         form = AuthenticationForm()
     return render(request, 'loginPage.html', {'form': form})
-
 
 def logoutPage(request):
     logout(request)
@@ -173,7 +171,6 @@ def viewRecipePage(request):
 def search_results(request):
     query = request.GET.get('query')
     
-    # Search recipes by title, category, and tags using Q objects
     recipes = Recipe.objects.filter(
         Q(title__icontains=query) |
         Q(category__name__icontains=query) |

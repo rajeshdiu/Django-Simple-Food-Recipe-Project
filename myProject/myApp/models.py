@@ -14,6 +14,7 @@ class Custom_User(AbstractUser):
     confirm_password=models.CharField(max_length=100)
     user_type=models.CharField(choices=USER,max_length=120)
     otp_token = models.CharField(max_length=10, null= True, blank=True)
+    
     USERNAME_FIELD='email'
     REQUIRED_FIELDS=['username']
     def __str__(self):
