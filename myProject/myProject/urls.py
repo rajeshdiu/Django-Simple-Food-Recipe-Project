@@ -1,6 +1,6 @@
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -24,5 +24,9 @@ urlpatterns = [
     path('activate/<uid64>/<token>', activate,name='activate'),
     path('edit_recipe/<str:myid>', edit_recipe,name='edit_recipe'),
     path('delete_recipe/<str:myid>', delete_recipe,name='delete_recipe'),
+    
+    
+    path('notifications/', include('notifications.urls', namespace='notifications')),
+    path('notifications_page/', notifications_page, name='notifications_page'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -14,6 +14,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
+from notifications.signals import notify
 
 
 def activate(request,uid64,token):
@@ -136,12 +137,17 @@ def dashBoardPage(request):
 
     return render(request, 'dashBoardPage.html')
 
+
 def addRecipePage(request):
     if request.method == 'POST':
         form = RecipeForm(request.POST, request.FILES)
         if form.is_valid():
-            form.instance.user = request.user
-            form.save()
+            recipe = form.save(commit=False)
+            recipe.user = request.user
+            recipe.save()
+            
+            notify.send(sender=request.user, recipient=request.user, verb='created', action_object=recipe)
+            
             return redirect('viewRecipePage')
     else:
         form = RecipeForm()
@@ -150,14 +156,16 @@ def addRecipePage(request):
 
 def AddRecipeCategoryPage(request):
     if request.method == 'POST':
-        form = RecipeCategoryForm(request.POST,request.FILES)
+        form = RecipeCategoryForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('recipe_categories') 
+            category = form.save()  
+            notify.send(sender=request.user, recipient=request.user, verb='created', action_object=category)
+            return redirect('recipe_categories')
     else:
         form = RecipeCategoryForm()
 
     return render(request, 'AddRecipeCategoryPage.html', {'form': form})
+
 
 def recipe_categories(request):
     categories = RecipeCategory.objects.all()
@@ -181,7 +189,7 @@ def search_results(request):
 
 @login_required
 def edit_recipe(request, myid):
-    recipe = get_object_or_404(Recipe, pk=myid)
+    recipe = get_object_or_404(Recipe, id=myid)
 
     if request.method == 'POST':
         form = RecipeForm(request.POST, request.FILES, instance=recipe)
@@ -219,3 +227,14 @@ def add_to_favorites(request, recipe_id):
 def view_favorites(request):
     favorite_recipes = FavoriteRecipe.objects.filter(user=request.user)
     return render(request, 'view_favorites.html', {'favorite_recipes': favorite_recipes})
+
+def notifications_page(request):
+    
+    notifications = request.user.notifications.all()
+    notification_count = notifications.count()
+    
+    context = {
+        'notifications': notifications,
+        'notification_count': notification_count
+    }
+    return render(request, 'notifications.html', context)

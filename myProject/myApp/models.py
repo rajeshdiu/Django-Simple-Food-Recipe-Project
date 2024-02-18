@@ -22,6 +22,7 @@ class Custom_User(AbstractUser):
 
 class RecipeCategory(models.Model):
     name = models.CharField(max_length=50, unique=True)
+    description = models.CharField(max_length=50, unique=True,null=True)
 
     def __str__(self):
         return self.name

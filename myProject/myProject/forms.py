@@ -32,4 +32,5 @@ class UserProfileForm(forms.ModelForm):
 class RecipeCategoryForm(forms.ModelForm):
     class Meta:
         model = RecipeCategory
-        fields = ['name']
+        fields = ['name', 'description']  # Adjust based on your model fields
+
